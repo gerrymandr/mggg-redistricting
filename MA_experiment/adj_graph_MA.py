@@ -28,8 +28,9 @@ shp = ps.open(file_dir)
 # print(poly.points)
 
 # map all vertices to a centroid
-cents = {(round(v[0],4),round(v[1],4)): (round(s.centroid[0],4),round(s.centroid[1],4)) for s in shp for v in s.vertices}
+# cents = {(round(v[0],9),round(v[1],9)): (round(s.centroid[0],9),round(s.centroid[1],9)) for s in shp for v in s.vertices}
 # cents = {s.centroid: v for s in shp for v in s.vertices}
+cents = {v: s.centroid for s in shp for v in s.vertices}
 
 fig = plt.figure(figsize=(9,9))
 fig.set_facecolor('white')
@@ -42,7 +43,7 @@ base.set_edgecolor('0.8')
 # show()
 
 # create a network to obtain the adjacency graph edges
-MA_network = nw.network.Network(file_dir, unique_segs=True, node_sig=6)
+MA_network = nw.network.Network(file_dir, unique_segs=True, node_sig=None)
 # MA_network.extractgraph()
 
 # map block ids to coordinates
@@ -64,9 +65,9 @@ edge_list = LineCollection(edge_list)
 edge_list.set_linewidth(0.20)
 ax = maps.setup_ax([base, edge_list], [shp.bbox, shp.bbox])
 fig.add_axes(ax)
-# show()
+show()
 
-savefig("Massachusetts_adjacency_graph.png")
+# savefig("Massachusetts_adjacency_graph.png")
 
 
 # # Read Shapefile
