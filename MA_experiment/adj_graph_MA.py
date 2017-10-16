@@ -19,7 +19,8 @@ from matplotlib.collections import LineCollection
 
 # INPUTS
 # string for SHP file directory - user should adjust this as necessary
-file_dir = "/Users/avelez/Documents/MGGG_UROP/state-adjacency-graphs/MA_experiment/MA_case/cb_2016_25_tract_500k/cb_2016_25_tract_500k.shp"
+# using 2010 Census Data
+file_dir = "/Users/avelez/Documents/MGGG_UROP/state-adjacency-graphs/MA_experiment/MA_case/tract_file/tl_2010_78_tract10.shp"
 
 # map out census blocks
 shp = ps.open(file_dir)
