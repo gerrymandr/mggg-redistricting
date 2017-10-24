@@ -11,7 +11,6 @@ from matplotlib.collections import LineCollection
 import glob
 import collections
 import shapely.geometry
-import arcpy
 # import shapefile
 
 # INPUTS
