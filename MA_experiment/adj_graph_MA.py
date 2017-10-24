@@ -68,7 +68,9 @@ edge_list = LineCollection(edge_list)
 edge_list.set_linewidth(0.20)
 ax = maps.setup_ax([base, edge_list], [shp.bbox, shp.bbox])
 fig.add_axes(ax)
-show()
+
+# use this line to see your output
+# show()
 
 # use this line to save your output
 # savefig("Massachusetts_adjacency_graph.png")
