@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="32be54bf-28b7-4b9b-b0cd-e99162cfc793" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/WY_experiment/WY_case/adj_graph_WY_tester.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WY_experiment/WY_case/tester.py" afterPath="$PROJECT_DIR$/MA_experiment/adj_graph_MA_tester.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testershape.dbf" afterPath="$PROJECT_DIR$/testershape.dbf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testershape.shp" afterPath="$PROJECT_DIR$/testershape.shp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testershape.shx" afterPath="$PROJECT_DIR$/testershape.shx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WY_experiment/WY_case/adj_graph_WY_tester.py" afterPath="$PROJECT_DIR$/WY_experiment/WY_case/adj_graph_WY_tester.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testershape.qgs" afterPath="$PROJECT_DIR$/testershape.qgs" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -46,11 +48,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="adj_graph_WY_tester.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="adj_graph_WY_tester.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/WY_experiment/WY_case/adj_graph_WY_tester.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="338">
-              <caret line="26" column="69" lean-forward="false" selection-start-line="26" selection-start-column="69" selection-end-line="26" selection-end-column="69" />
+            <state relative-caret-position="245">
+              <caret line="26" column="75" lean-forward="false" selection-start-line="26" selection-start-column="75" selection-end-line="26" selection-end-column="75" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -58,7 +60,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="adj_graph_MA_tester.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="adj_graph_MA_tester.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MA_experiment/adj_graph_MA_tester.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="720">
@@ -96,11 +98,12 @@
         <option value="$PROJECT_DIR$/WY_experiment/WY_case/adj_graph_WY.py" />
         <option value="$PROJECT_DIR$/WY_experiment/WY_case/tester.py" />
         <option value="$PROJECT_DIR$/MA_experiment/adj_graph_MA_tester.py" />
+        <option value="$PROJECT_DIR$/WY_experiment/WY_case/adj_graph_WY_tester.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="23" />
+    <option name="y" value="94" />
     <option name="width" value="1280" />
     <option name="height" value="706" />
   </component>
@@ -170,7 +173,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.adj_graph_MA_tester">
+  <component name="RunManager" selected="Python.tester">
     <configuration name="adj_graph_MA" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -265,8 +268,8 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.adj_graph_MA_tester" />
-        <item index="1" class="java.lang.String" itemvalue="Python.tester" />
+        <item index="0" class="java.lang.String" itemvalue="Python.tester" />
+        <item index="1" class="java.lang.String" itemvalue="Python.adj_graph_MA_tester" />
         <item index="2" class="java.lang.String" itemvalue="Python.adj_graph_WY" />
         <item index="3" class="java.lang.String" itemvalue="Python.adj_graph_MA" />
         <item index="4" class="java.lang.String" itemvalue="Python.node_membership_computations_MA" />
@@ -287,16 +290,17 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1280" height="706" extended-state="0" />
+    <frame x="0" y="94" width="1280" height="706" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2584814" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.41571194" sideWeight="0.509693" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.41571194" sideWeight="0.49030694" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.41571194" sideWeight="0.49030694" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32569557" sideWeight="0.49192247" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32569557" sideWeight="0.49192247" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -419,26 +423,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WY_experiment/WY_case/adj_graph_WY.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="335">
-          <caret line="88" column="0" lean-forward="true" selection-start-line="21" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
-          <folding>
-            <element signature="e#259#285#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WY_experiment/WY_case/adj_graph_WY_tester.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="338">
-          <caret line="26" column="69" lean-forward="false" selection-start-line="26" selection-start-column="69" selection-end-line="26" selection-end-column="69" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/MA_experiment/adj_graph_MA.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="280">
@@ -455,6 +439,26 @@
           <caret line="48" column="34" lean-forward="true" selection-start-line="48" selection-start-column="34" selection-end-line="48" selection-end-column="34" />
           <folding>
             <element signature="e#11#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WY_experiment/WY_case/adj_graph_WY.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="335">
+          <caret line="88" column="0" lean-forward="true" selection-start-line="21" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
+          <folding>
+            <element signature="e#259#285#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WY_experiment/WY_case/adj_graph_WY_tester.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="26" column="75" lean-forward="false" selection-start-line="26" selection-start-column="75" selection-end-line="26" selection-end-column="75" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
