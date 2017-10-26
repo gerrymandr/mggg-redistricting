@@ -24,7 +24,7 @@ def share_vertex(the_first_shape, the_second_shape, shape_vertices_dict):
     """
     for the_first_vertex in shape_vertices_dict[the_first_shape]:
         for the_second_vertex in shape_vertices_dict[the_second_shape]:
-            if distance(the_first_vertex, the_second_vertex) < 1 / 10:
+            if distance(the_first_vertex, the_second_vertex) < 1 / (10**10):
                 return True
     return False
 
