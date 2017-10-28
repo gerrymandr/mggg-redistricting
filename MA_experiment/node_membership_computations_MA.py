@@ -1,6 +1,9 @@
 
 # PACKAGES
-import pysal.network as nw
+# import pysal.network as nw
+# import scipy
+# import scipy.stats.stats
+# from scipy.stats.stats import chisqprob
 import matplotlib as plt
 import numpy as np
 import pysal as ps
@@ -8,9 +11,11 @@ import random as rdm
 from pysal.contrib.viz import mapping as maps
 from pylab import *
 from matplotlib.collections import LineCollection
+
 import glob
 import collections
-import shapely.geometry
+import shapely.geometry as sg
+import csv
 # import shapefile
 
 # INPUTS
@@ -62,7 +67,7 @@ for i in range(len(DISTRICT_LIST)):
 	if state not in STATE_TO_DISTRICTS:
 		STATE_TO_DISTRICTS[state]=[]
 	STATE_TO_DISTRICTS[state].append(district_polygon)
-	DISTRICT_TO_GEOID[district_polygon] = GEOID_LIST[i]
+	DISTRICT_TO_GEOID[district_polygon] = GEOID_LIST[i][0]
 
 # print('done')
 # print(STATE_TO_DISTRICTS)
@@ -70,11 +75,60 @@ for i in range(len(DISTRICT_LIST)):
 """
 
 iterate over the tract files and compute the following
-For each district, compute:
-number of boundary tracts (at least one neighbor inside the district and at least one neighbor out)
-number of member tracts (>= 10% of the tract in the district)
+...
 
 """
+
+# get entries in following format [(district GEOID), (tract_id [unsure how to get this effectively]), area of intersection]
+# number of boundary tracts and number of member tracts
+entries = []
+node_membership = []
+for tract_file in tract_files:
+	shp = ps.open(tract_file)
+	graph = twostep(shp)
+	tid_to_poly = {x:y for x,y in enumerate(shp)}
+	state = tract_file[-14:-12]
+	# state_tracts = ps.cg.locators.PolygonLocator([poly for poly in shp]) # package bug ..
+	for district in STATE_TO_DISTRICTS[state]:
+		# tracts_to_consider = state_tracts.inside(district.bounding_box) # package bug ..
+		# tracts_to_consider = graph.items()
+		# ct = 0 #placeholder to tract IDs
+		d = sg.asShape(district)
+		dbox = sg.box(*sg.asShape(district).bounds)
+		dboundary = set()
+		dmember = set()
+
+		for tid,tract in tid_to_poly.items():
+			#print(tract)
+			t = sg.box(*sg.asShape(tract).bounds)
+			if t.intersects(dbox):
+				if d.intersects(t):
+					area = d.intersection(t).area
+					entries.append([DISTRICT_TO_GEOID[district], tid, area])
+				# ct+=1
+					if all(d.intersects(sg.asShape(tid_to_poly[x])) for x in graph[tid]):
+						dmember.update([tid])
+					else:
+						dboundary.update([tid])
+		node_membership.append([DISTRICT_TO_GEOID[district],len(dboundary),len(dmember)])
+
+
+
+print(entries)
+print(node_membership)
+# print(tract_files[0])
+
+# save results
+with open("district_to_tracts_overlap.csv", "w") as f1:
+	writer1 = csv.writer(f1)
+	writer1.writerows(entries)
+
+with open("node_membership.csv", "w") as f2:
+	writer2 = csv.writer(f2)
+	writer2.writerows(node_membership)
+
+
+
 
 # print(shapely.geometry.asShape(STATE_TO_DISTRICTS['04'][0]).intersection(shapely.geometry.asShape(STATE_TO_DISTRICTS['04'][1])).area)
 
