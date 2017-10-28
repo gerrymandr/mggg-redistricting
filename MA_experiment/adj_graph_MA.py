@@ -46,6 +46,9 @@ def twostep(fname):
 # map out census blocks
 shp = ps.open(file_dir)
 
+#TEST
+# print([x for x in shp])
+
 # setting up matplot figure
 fig = plt.figure(figsize=(9,9))
 fig.set_facecolor('white')
