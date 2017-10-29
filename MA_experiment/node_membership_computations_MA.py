@@ -15,7 +15,8 @@ from matplotlib.collections import LineCollection
 import glob
 import collections
 import shapely.geometry as sg
-import csv
+# import csv
+import pandas as pd
 # import shapefile
 
 # INPUTS
@@ -100,9 +101,11 @@ for tract_file in tract_files:
 
 		for tid,tract in tid_to_poly.items():
 			#print(tract)
-			t = sg.box(*sg.asShape(tract).bounds)
+			t = sg.box(*tract.bbox)
 			if t.intersects(dbox):
+				# print("yep1")
 				if d.intersects(t):
+					# print("yep2")
 					area = d.intersection(t).area
 					entries.append([DISTRICT_TO_GEOID[district], tid, area])
 				# ct+=1
@@ -119,13 +122,20 @@ print(node_membership)
 # print(tract_files[0])
 
 # save results
-with open("district_to_tracts_overlap.csv", "w") as f1:
-	writer1 = csv.writer(f1)
-	writer1.writerows(entries)
 
-with open("node_membership.csv", "w") as f2:
-	writer2 = csv.writer(f2)
-	writer2.writerows(node_membership)
+df_entries = pd.DataFrame(entries)
+df_node_membership = pd.DataFrame(node_membership)
+
+df_entries.to_csv("district_to_tracts_overlap.csv", index=False, header = False)
+df_node_membership.to_csv("node_membership.csv", index=False,header=False)
+
+# with open("district_to_tracts_overlap.csv", "w") as f1:
+# 	writer1 = csv.writer(f1)
+# 	writer1.writerows(entries)
+
+# with open("node_membership.csv", "w") as f2:
+# 	writer2 = csv.writer(f2)
+# 	writer2.writerows(node_membership)
 
 
 
