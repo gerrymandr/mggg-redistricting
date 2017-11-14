@@ -21,9 +21,10 @@ import pandas as pd
 
 # INPUTS
 # directory where tract files are contained
-tract_directory = "/Users/avelez/Documents/MGGG_UROP/state-adjacency-graphs/MA_experiment/MA_case/tract_file"
+tract_directory = "/Users/avelez/Documents/MGGG_UROP/state-adjacency-graphs/adjacency_graphs_all/MA_case/tract_file"
 # 2013 congressional districts file
-cdistricts_file = "/Users/avelez/Documents/MGGG_UROP/state-adjacency-graphs/MA_experiment/MA_case/cb_2013_us_cd113_500k/cb_2013_us_cd113_500k.shp"
+cdistricts_file = "/Users/avelez/Documents/MGGG_UROP/state-adjacency-graphs/adjacency_graphs_all/MA_case/cb_2013_us_cd113_500k/cb_2013_us_cd113_500k.shp"
+threshold = 0.00001 # for determining boundary nodes
 
 # create list of path names to the tract files
 tract_files = glob.glob(tract_directory+'/*.shp')
@@ -50,7 +51,7 @@ def twostep(fname):
 #####################################################
 
 # obtain a list for the states for each congressional district
-cdistricts_dbf = "/Users/avelez/Documents/MGGG_UROP/state-adjacency-graphs/MA_experiment/MA_case/cb_2013_us_cd113_500k/cb_2013_us_cd113_500k.dbf"
+cdistricts_dbf = "/Users/avelez/Documents/MGGG_UROP/state-adjacency-graphs/adjacency_graphs_all/MA_case/cb_2013_us_cd113_500k/cb_2013_us_cd113_500k.dbf"
 cd_dbf = ps.open(cdistricts_dbf)
 STATE_LIST = cd_dbf.by_col_array('STATEFP')
 DISTRICT_LIST = [x for x in ps.open(cdistricts_file)]
@@ -107,9 +108,13 @@ for tract_file in tract_files:
 				if d.intersects(t):
 					# print("yep2")
 					area = d.intersection(t).area
-					entries.append([DISTRICT_TO_GEOID[district], tid, area])
+					entries.append([DISTRICT_TO_GEOID[district], tid, area, area/t.area])
 				# ct+=1
-					if all(d.intersects(sg.asShape(tid_to_poly[x])) for x in graph[tid]):
+					# if all(d.intersection(sg.box(*tid_to_poly[x].bbox)).area/sg.box(*tid_to_poly[x].bbox).area >0.5 for x in graph[tid]):
+					# 	dmember.update([tid])
+					# else:
+					# 	dboundary.update([tid])
+					if area/t.area >= (1.0-threshold):
 						dmember.update([tid])
 					else:
 						dboundary.update([tid])
@@ -126,48 +131,6 @@ print(node_membership)
 df_entries = pd.DataFrame(entries)
 df_node_membership = pd.DataFrame(node_membership)
 
-df_entries.to_csv("district_to_tracts_overlap.csv", index=False, header = False)
-df_node_membership.to_csv("node_membership.csv", index=False,header=False)
+df_entries.to_csv("district_to_tracts_overlap_new2.csv", index=False, header = False)
+df_node_membership.to_csv("node_membership_new2.csv", index=False,header=False)
 
-# with open("district_to_tracts_overlap.csv", "w") as f1:
-# 	writer1 = csv.writer(f1)
-# 	writer1.writerows(entries)
-
-# with open("node_membership.csv", "w") as f2:
-# 	writer2 = csv.writer(f2)
-# 	writer2.writerows(node_membership)
-
-
-
-
-# print(shapely.geometry.asShape(STATE_TO_DISTRICTS['04'][0]).intersection(shapely.geometry.asShape(STATE_TO_DISTRICTS['04'][1])).area)
-
-
-# print([x for x in ps.open(cdistricts_file)]) # --> generator for Polygon objects
-
-
-# sf = shapefile.Reader(cdistricts_file)
-# # print(sf.fields)
-# # GEOID_index = sf.fields.index(['GEOID', 'C', 4, 0])
-# shapeRecords = sf.shapeRecords()
-
-# print([x.record[GEOID_index-1] for x in shapeRecords]) #Use GEOID for pairing state ids to congressional
-
-### MAY NOT NEED THIS!!
-# # create a graph which includes all tracts 
-# tract_graph = {}
-# for shp_file in tract_files:
-# 	shp = ps.open(shp_file)
-# 	tract_graph.update(twostep(shp))
-# ### WARNING: ^ this takes a few seconds..
-
-
-
-
-# # test two-step on one of the files
-# shp = ps.open(tract_files[0])
-# print(twostep(shp))
-
-
-# #TESTS
-# print(tract_files)
