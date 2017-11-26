@@ -1,13 +1,10 @@
 """
-This file is meant to create an adjacency graph of US census blocks for
-the state of Massachusetts. 
+This file is meant to create an adjacency graph of US census tracts.
 
-using data from
-https://www.census.gov/geo/maps-data/data/cbf/cbf_tracts.html
+using data from census ftp2 server
 """
 
 # PACKAGES
-# import shapefile #experimenting with this library as well
 import pysal.network as nw
 import matplotlib as plt
 import numpy as np
