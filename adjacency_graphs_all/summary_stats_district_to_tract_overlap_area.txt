@@ -1,0 +1,4 @@
+Distribution for the tract area overlap with districts.
+
+ Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.0000  0.5368  0.9983  0.7496  1.0000  1.0000 
