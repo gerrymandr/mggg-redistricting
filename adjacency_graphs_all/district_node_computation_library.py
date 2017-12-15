@@ -65,7 +65,7 @@ def get_dbf_shp_files(directory):
 """
 mggg_twostep
 Create an adjacency graph pairing census geographic entities to adjacencies. Outputs
-a graph using geographic identifiers if that is the key provided in the input.
+a graph using geographic identifiers iff that is the key provided in the input.
 
 Uses the High Performance Containers and Set Operations two-step algorithm
 for node adjacency source:
@@ -91,6 +91,50 @@ def mggg_twostep(polymap):
 		for neighbor in neighbors:
 			w[neighbor] = w[neighbor] | neighbors
 	return w
+
+"""
+visualize_adjacency_graph
+create and visualize an adjacency graph of geometries in an shp file.
+
+@param file_dir a string directory for the shp file which one wishes to analyze.
+@param out_dir a string directory where one wishes to save the output image. Image
+will not be saved if this is None.
+"""
+def visualize_adjacency_graph(file_dir, out_dir=None):
+	# open the file and obtain pysal geometries
+	shp = ps.open(file_dir)
+
+	# setting up matplot figure
+	fig = plt.figure(figsize=(9,9))
+	fig.set_facecolor('white')
+	base = maps.map_poly_shp(shp)
+	base.set_linewidth(0.75)
+	base.set_facecolor('none')
+	base.set_edgecolor('0.8')
+
+	# graph contains polygons matched to their neighbors, uses polygon identifiers
+	graph = mggg_twostep(shp)
+
+	# obtain the centroids of polygons
+	polygon_centroids = {x:y.centroid for x,y in enumerate(shp)}
+
+	# connect centroids of the polygons using LineCollection
+	edge_list = [(polygon_centroids[poly1], polygon_centroids[poly2]) for poly1,neighbors in graph.items() for poly2 in neighbors]
+	edge_list = LineCollection(edge_list)
+
+	edge_list.set_linewidth(0.20)
+	ax = maps.setup_ax([base, edge_list], [shp.bbox, shp.bbox])
+	fig.add_axes(ax)
+
+	# see your output
+	show()
+
+	# save your output
+	if(out_dir is not None):
+		savefig(out_dir)
+
+	plt.close()
+
 
 """
 get_state_to_districts_map
@@ -138,7 +182,7 @@ boundary_node
 Determine if a polygon is a boundary node for another polygon
 
 @param super super-unit polygon (ie. congressional district)
-@param sub sub-unit polygon (ie. tract)
+@param sub sub-unit polygon (ie. census tract)
 
 return true iff sub is boundary node for super
 """
