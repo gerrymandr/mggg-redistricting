@@ -44,8 +44,10 @@ The function used to generate adjacency graphs is 'mggg_twostep' and it can be f
 ```
 shp_dir = "path/to/some/shp/file.shp"
 dbf_dir = "path/to/corresponding/dbf/file.shp"
-id_column = "ID" # this should be the column name associated with the identifier 				# one wishes to use for the data. In the case of census data, it is
-				# common to use geographic identifiers, usually labeled as "GEOID".
+id_column = "ID"
+"""
+ID should be the column name associated with the identifier one wishes to use for the data. In the case of census data, it is common to use geographic identifiers, usually labeled as "GEOID".
+"""
 
 polymap = create_polymap(shp_dir, dbf_dir, geoid_column)
 adjacency_graph = mggg_twostep(polymap)
