@@ -92,7 +92,7 @@ Alejandro Velez
 Sarah Von Ahn (note a lot of the code not discussed in the readme belongs to her)
 
 ## Other Acknowledgements
-Justin Solomon - supervisor
-Moon Duchin, Mira Bernstein - MGGG project
-Gabriel Ramirez, Ria Das - fellow undergraduate researchers
-Richard Barnes - helped with understanding how to access census data
+Justin Solomon - supervisor \n
+Moon Duchin, Mira Bernstein - MGGG project \n
+Gabriel Ramirez, Ria Das - fellow undergraduate researchers \n
+Richard Barnes - helped with understanding how to access census data \n
