@@ -34,7 +34,22 @@ This section describes the code included in this project and possible uses. The 
 
 ### Adjacency Graphs and Visualization
 ![Adjacency graph for the TX tracts](adjacency_graph_48.png)
-The above image is a visualization for the adjacency graphs of the tracts within the states of Texas.
+The above image is a visualization for the adjacency graphs of the tracts within the states of Texas. The code discussed in this portion can be used to create adjacency graphs for census tracts, blocks and other state sub-units. In implementation, some code shared in the 2014 scipy conference was used. See below for details.
+
+![SciPy Conference](http://conference.scipy.org/proceedings/scipy2008/static/images/scipy_conf_logo.png)
+
+#### Adjacency Graphs
+The function used to generate adjacency graphs is 'mggg_twostep' and it can be found in 'district_node_computation_library.py'. It implements the "twostep" algorithm discussed in "Scaling Polygon Adjacency Algorithms to Big Data Geospatial Analysis" by Jason Laura and Sergio J. Rey. As input, it requires a python dictionary who's values are PySAL geometries. To generate such a dictionary from a .shp file and a .dbf file, one could use 'create_polymap', which is found in the same library. The workflow to create an adjacency graph is then:
+
+'''
+shp_dir = "path/to/some/shp/file.shp"
+dbf_dir = "path/to/corresponding/dbf/file.shp"
+id_column = "ID" # this should be the column name associated with the identifier 				# one wishes to use for the data. In the case of census data, it is
+				# common to use geographic identifiers, usually labeled as "GEOID".
+
+polymap = create_polymap(shp_dir, dbf_dir, geoid_column)
+adjacency_graph = mggg_twostep(polymap)
+'''
 
 ### Membership Computations
 
