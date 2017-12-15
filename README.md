@@ -53,5 +53,9 @@ polymap = create_polymap(shp_dir, dbf_dir, geoid_column)
 adjacency_graph = mggg_twostep(polymap)
 ```
 
+#### Visualization
+'visualize_adjacency_graph' will output a visualized adjacency graph for an shp file, such as the one below (generated using an shp file for the census tracts of massachusetts).
+![MA graph](adjacency_graphs_all/Massachusetts_adjacency_graph.png)
+
 ### Membership Computations
 
