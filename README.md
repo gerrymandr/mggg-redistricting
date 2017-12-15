@@ -55,7 +55,7 @@ adjacency_graph = mggg_twostep(polymap)
 
 #### Visualization
 'visualize_adjacency_graph' will output a visualized adjacency graph for an shp file, such as the one below (generated using an shp file for the census tracts of Nevada).
-![NV graph](adjacency_graph_32)
+![NV graph](adjacency_graph_32.png)
 
 ### Membership Computations
 
