@@ -1,5 +1,5 @@
 """
-This library contains several methods used in the computations for 
+This library contains several methods used in the computations for
 district-to-tract overlap area as well as node membership computations (boundary
 and member nodes)
 
@@ -29,10 +29,10 @@ create_polymap
 Obtain a python dictionary mapping Census geographic entity GEOIDs (as defined in
 https://www.census.gov/geo/reference/geoidentifiers.html) to pysal Polygon objects
 
-@param shp_dir a string directory containing the shp file of interest 
+@param shp_dir a string directory containing the shp file of interest
 for the census geographic entity one wishes to explore
 
-@param dbf_dir a string directory the dbf file of interest for the census 
+@param dbf_dir a string directory the dbf file of interest for the census
 geographic entity one wishes to explore
 
 @param geoid_column a string containing the identifier used to label the GEOID
@@ -67,8 +67,8 @@ mggg_twostep
 Create an adjacency graph pairing census geographic entities to adjacencies. Outputs
 a graph using geographic identifiers if that is the key provided in the input.
 
-Uses the High Performance Containers and Set Operations two-step algorithm 
-for node adjacency source: 
+Uses the High Performance Containers and Set Operations two-step algorithm
+for node adjacency source:
 http://conference.scipy.org/proceedings/scipy2014/pdfs/laura.pdf
 
 @param polymap dictionary mapping the desired ID to their pysal geometries
@@ -77,7 +77,7 @@ http://conference.scipy.org/proceedings/scipy2014/pdfs/laura.pdf
 """
 def mggg_twostep(polymap):
 	shpFileObject = polymap
-	
+
 	numPoly = len(shpFileObject)
 
 	vertices = collections.defaultdict(set)
@@ -94,7 +94,7 @@ def mggg_twostep(polymap):
 
 """
 get_state_to_districts_map
-Create a python dictionary mapping state FIPS codes to a list of the 
+Create a python dictionary mapping state FIPS codes to a list of the
 congressional districts belonging to the state.
 
 @param dbf_dir directory to the census dbf file for the congressional districts
@@ -117,7 +117,7 @@ def get_state_to_districts_map(dbf_dir, shp_dir, state_col, cd_col):
 
 """
 get_district_member_and_boundary_entities
-Output a list of lists [district_geoid, # of boundary nodes, 
+Output a list of lists [district_geoid, # of boundary nodes,
 total # of member nodes]
 
 sub-entities can be one of blocks, block groups, tracts
@@ -142,7 +142,7 @@ Determine if a polygon is a boundary node for another polygon
 
 return true iff sub is boundary node for super
 """
-def boundary_node(supr, sub, b=0.1, threshold=.00001):
+def boundary_node(supr, sub, b=0.0001, threshold=0):
 	if !intersect(supr,sub):
 		return False
 	sg1=sg.asShape(supr)
@@ -161,6 +161,6 @@ def intersect(geom1, geom2):
 
 	if box1.intersects(box2):
 		if sg1.intersects(sg2):
-			return True 
+			return True
 
 	return False
