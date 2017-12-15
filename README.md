@@ -33,7 +33,7 @@ Installing PySAL and PySAL documentation: http://pysal.readthedocs.io/en/latest/
 This section describes the code included in this project and possible uses. The code described is in the 'adjacency_graphs_all' folder of the repository.
 
 ### Adjacency Graphs and Visualization
-![Adjacency graph for the TX tracts](../data/adjacency_graphs/adjacency_graph_48.png)
+![Adjacency graph for the TX tracts](adjacency_graph_48.png)
 The above image is a visualization for the adjacency graphs of the tracts within the states of Texas.
 
 ### Membership Computations
