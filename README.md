@@ -7,4 +7,34 @@ These instructions will get you a copy of project code up and running on your ma
 ### Prerequisites
 The following software needs to be installed on your machine. Instructions for installation are included and/or linked to in this section.
 
+#### Python 3.5.x or greater and Anaconda 4.4+ 
 ![Python 3.5.3 :: Anaconda 4.4.0](https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Python3-powered_hello-world.svg/2000px-Python3-powered_hello-world.svg.png)
+Instructions on installing conda can be found here:
+https://conda.io/docs/user-guide/install/index.html
+
+#### Packages
+You will also need to install the following packages to run the code in this project:
+
+- PySAL
+- PyLAB
+- Glob
+- Collections
+- shapely
+
+The recommended method of installation is using Python pip. For instructions on installing python packages using pip, see the instructions linked to below.
+
+Installing pip: https://pip.pypa.io/en/stable/installing/
+
+Installing packages using pip: https://packaging.python.org/guides/installing-using-pip-and-virtualenv/
+
+Installing PySAL and PySAL documentation: http://pysal.readthedocs.io/en/latest/users/installation.html
+
+## Usage
+This section describes the code included in this project and possible uses. The code described is in the 'adjacency_graphs_all' folder of the repository.
+
+### Adjacency Graphs and Visualization
+![Adjacency graph for the TX tracts](https://www.dropbox.com/home/census%20network%20analysis/tract%20adjacency%20lists%20and%20graphs/adjacency%20graphs?preview=adjacency_graph_48.png)
+The above image is a visualization for the adjacency graphs of the tracts within the states of Texas.
+
+### Membership Computations
+
