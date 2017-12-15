@@ -46,7 +46,9 @@ shp_dir = "path/to/some/shp/file.shp"
 dbf_dir = "path/to/corresponding/dbf/file.shp"
 id_column = "ID"
 """
-ID should be the column name associated with the identifier one wishes to use for the data. In the case of census data, it is common to use geographic identifiers, usually labeled as "GEOID".
+ID should be the column name associated with the identifier one wishes to use for
+the data. In the case of census data, it is common to use geographic identifiers,
+usually labeled as "GEOID".
 """
 
 polymap = create_polymap(shp_dir, dbf_dir, geoid_column)
@@ -92,7 +94,7 @@ Alejandro Velez
 Sarah Von Ahn (note a lot of the code not discussed in the readme belongs to her)
 
 ## Other Acknowledgements
-Justin Solomon - supervisor \n
-Moon Duchin, Mira Bernstein - MGGG project \n
-Gabriel Ramirez, Ria Das - fellow undergraduate researchers \n
-Richard Barnes - helped with understanding how to access census data \n
+Justin Solomon - supervisor  
+Moon Duchin, Mira Bernstein - MGGG project  
+Gabriel Ramirez, Ria Das - fellow undergraduate researchers  
+Richard Barnes - helped with understanding how to access census data
