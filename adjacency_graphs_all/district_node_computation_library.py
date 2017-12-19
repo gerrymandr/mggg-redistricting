@@ -255,16 +255,3 @@ def boundary_node(supr, sub, b=0.0001, threshold=0):
 		return True
 
 	return False
-
-def intersect(geom1, geom2):
-	box1 = sg.box(*geom1.bbox)
-	box2 = sg.box(*geom2.bbox)
-
-	sg1 = sg.asShape(geom1)
-	sg2 = sg.asShape(geom2)
-
-	if box1.intersects(box2):
-		if sg1.intersects(sg2):
-			return True
-
-	return False
