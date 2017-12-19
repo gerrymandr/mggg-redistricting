@@ -73,7 +73,7 @@ Instructions on how to access an ftp server via the command-line can be found in
 http://www.dummies.com/software/how-to-use-ftp-from-terminal-to-transfer-mac-files/
 
 ### Accessing Census Congressional District Data
-To access congressional district shapefile data via the ftp server, use the following lines from your command-line (note this would work for OSX/Unix Operating Systems).
+To access congressional district shapefile data via the ftp server, use the following lines from your command-line (note this would work for OSX/Linux Operating Systems).
 ```
 ftp ftp://ftp2.census.gov/
 > cd geo/tiger/TIGER2013/cd
