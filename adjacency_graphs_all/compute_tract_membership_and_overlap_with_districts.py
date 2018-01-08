@@ -18,6 +18,7 @@ import shapely.geometry as sg
 # import csv
 import pandas as pd
 # import shapefile
+import threading
 
 # INPUTS
 # directory where tract files are contained
@@ -103,6 +104,7 @@ iterate over the tract files and compute the following
 
 # get entries in following format [(district GEOID), (tract_id [unsure how to get this effectively]), area of intersection]
 # number of boundary tracts and number of member tracts
+# note: lists in pytohn are threadsafe
 entries = []
 node_membership = []
 for tract_file, dbf_file in files:
