@@ -9,7 +9,7 @@ enthusiasts
 """
 
 """
-Packaged used are below. The library is built on top of pysal, pandas, shapely and
+Packages used are below. The library is built on top of pysal, pandas, shapely and
 other libraries.
 """
 import matplotlib as plt
@@ -23,6 +23,7 @@ import glob
 import collections
 import shapely.geometry as sg
 import pandas as pd
+import threading
 
 """
 create_polymap
@@ -160,15 +161,133 @@ def get_state_to_districts_map(dbf_dir, shp_dir, state_col, cd_col):
 	return {state[0]:[(geoid_list[i][0],district_list[i]) for i in range(len(district_list)) if state_list[i][0]==state[0]] for state in state_list}
 
 """
-
+Thread class definitions
 """
+class file_thread(threading.Thread):
+	def __init__(self,subunit_file,dbf_file,geoid_col,state_to_districts_map,overlap_list,membership_list,begin,end, threshold, boundary_buffer):
+		threading.Thread.__init__(self)
+		self.subunit_file = subunit_file
+		self.dbf_file = dbf_file
+		self.geoid_col = geoid_col
+		self.state_to_districts = state_to_districts_map
+		self.entries = overlap_list
+		self.node_membership = membership_list
+		self.begin = begin
+		self.end = end
+		self.threshold = threshold
+		self.boundary_buffer = boundary_buffer
+
+	def run(self):
+		# map identifiers to subunit geometries
+		geoID_to_subunit = create_polymap(self.subunit_file,self.dbf_file,self.geoid_col)
+
+		# parse to obtain relevant state code
+		state = self.subunit_file[self.begin:self.end]
+
+		threads = []
+
+		for geoID, district in self.state_to_districts[state]:
+			thread = unit_thread(geoID_to_subunit, self.entries,self.node_membership,geoID,district,self.threshold, self.boundary_buffer)
+			thread.start()
+			threads.append(thread)
+		for t in threads:
+			t.join()
+
+class unit_thread(threading.Thread):
+	def __init__(self,subunit_map, overlap_list, membership_list,geoID,unit,threshold,boundary_buffer):
+		threading.Thread.__init__(self)
+		self.geoID_to_subunit = subunit_map
+		self.entries = overlap_list
+		self.node_membership = membership_list
+		self.geoID = geoID
+		self.unit = unit
+		self.threshold = threshold
+		self.boundary_buffer = boundary_buffer
+
+	def run(self):
+		# create shapely geometries
+		d = sg.asShape(self.unit)
+		dbox = sg.box(*d.bounds)
+		# initialize sets to count boundary and member nodes
+		dboundary = set()
+		dmember = set()
+		setLock = threading.Lock()
+		listLock = threading.Lock()
+		threads = []
+		# iterate over subunits
+		for sid,subunit in self.geoID_to_subunit.items():
+			thr = subunit_thread(sid,subunit,self.entries,self.node_membership,self.geoID,d,dbox,setLock,listLock,self.threshold,self.boundary_buffer,dboundary,dmember)
+			thr.start()
+			threads.append(thr)
+		# Wait for all threads to terminate
+		for t in threads:
+			t.join()
+		# update membership list
+		self.node_membership.append([self.geoID,len(dboundary),len(dmember)])
+
+class subunit_thread(threading.Thread):
+	def __init__(self,subunit_id,subunit_geom,entries,node_membership,unit_geoID,unit,unit_bbox,setLock,listLock,threshold,boundary_buffer,dboundary,dmember):
+		threading.Thread.__init__(self)
+		self.sid = subunit_id
+		self.subunit = subunit_geom
+		self.entries = entries
+		self.node_membership = node_membership
+		self.unit_geoID = unit_geoID
+		self.unit = unit
+		self.unit_bbox = unit_bbox
+		self.setLock = setLock
+		self.listLock = listLock
+		self.threshold = threshold
+		self.boundary_buffer = boundary_buffer
+		self.dboundary = dboundary
+		self.dmember = dmember
+
+	def run(self):
+		# create bounding box for the subunit
+		s = sg.box(*self.subunit.bbox)
+		# to save time, first check whether bounding boxes for unit and
+		# subunit intersect
+		if s.intersects(self.unit_bbox):
+			s_shapely = sg.asShape(self.subunit)
+			# check whether geometries actually intersect
+			if self.unit.intersects(s_shapely):
+				# compute area of intersection
+				try:
+					area = self.unit.intersection(s_shapely).area
+					s_area = s_shapely.area
+				except: # handle cases where subunit shape is not well-defined
+					area = self.unit.intersection(s).area
+					s_area = s.area
+
+				overlap_percentage = area/s_area
+
+				# check if overlap threshold is met
+				if overlap_percentage<self.threshold:
+					return
+
+				# append to overlap list
+				with self.listLock:
+					self.entries.append([self.unit_geoID,self.sid,area,overlap_percentage])
+
+				# check if subunit is boundary or member
+				is_boundary = self.unit.intersection(s_shapely.buffer(s_area)).area/s_shapely.buffer(s_area).area<1
+				with self.setLock: #acquire setLock
+					if is_boundary:
+						self.dboundary.update([self.sid])
+					self.dmember.update([self.sid])
+
+
+
+
+
+
 
 
 """
 get_district_member_and_boundary_entities
 Output a list of lists [district_geoid, # of boundary nodes,
 total # of member nodes]
-Output a list of lists [district_geoid, subentity_geoid, area of overlap, total area]
+Output a list of lists [district_geoid, subentity_geoid, area of overlap, percentage_overlap]
 
 sub-entities can be one of blocks, block groups, tracts
 
@@ -179,11 +298,14 @@ sub-entities can be one of blocks, block groups, tracts
 sub-entity dbf file
 @param cd_col string identifier for the geographic identifier field in the dbf
 file
+@param state_col string identifier for the FIPS code field in the district dbf file
 @param begin starting index for the state identifier in sub-unit filenames
 @param end ending index for the state identifier in the sub-unit filenames
+@param threshold for node membership, default is 0.1 (10%)
+@param boundary_buffer to be added to subunit boundaries for computation accurary, default is 0.001
 
 """
-def get_district_member_and_boundary_entities(shp_and_dbf_file_dir, cd_dbf_dir, cd_shp_dir, sub_geoid_col, cd_col, begin, end):
+def get_district_member_and_boundary_entities(shp_and_dbf_file_dir, cd_dbf_dir, cd_shp_dir, sub_geoid_col, cd_col, state_col, begin, end, threshold=0.1, boundary_buffer=0.001):
 	# zip tract shp filenames to corresponding dbf filenames
 	files = get_dbf_shp_files(shp_and_dbf_file_dir)
 
@@ -193,45 +315,62 @@ def get_district_member_and_boundary_entities(shp_and_dbf_file_dir, cd_dbf_dir, 
 	# initialize two lists for output
 	entries = []
 	node_membership = []
+	threads = []
 
-	# iterate over the sub-unit files
-	for tract_file, dbf_file in files:
-		# map identifiers to tract geometries
-		GEOID_to_TRACT = create_polymap(tract_file,dbf_file,sub_geoid_col)
+	# iterate over the sub-unit files, multi-thread
+	for subunit_file, dbf_file in files:
+		thread = file_thread(subunit_file,dbf_file,sub_geoid_col,state_to_districts,entries,node_membership,begin,end,threshold,boundary_buffer)
+		thread.start()
+		threads.append(thread)
 
-		# parse to obtain relevant state code
-		state = tract_file[begin:end]
+	#check all threads terminated
+	for t in threads:
+		t.join()
+
+	return entries,node_membership
+
+
+	# 	# map identifiers to tract geometries
+	# 	GEOID_to_TRACT = create_polymap(tract_file,dbf_file,sub_geoid_col)
+
+	# 	# parse to obtain relevant state code
+	# 	state = tract_file[begin:end]
 		
-		# iterate over relevant districts to perform computations
-		for geoID, district in state_to_districts[state]:
-			# translate to shapely geometries 
-			d = sg.asShape(district)
-			dbox = sg.box(*sg.asShape(district).bounds)
-			# initialize sets to count boundary and member nodes
-			dboundary = set()
-			dmember = set()
-			# iterate over tracts 
-			for tid,tract in GEOID_to_TRACT.items():
-				# create bounding box for the district
-				t = sg.box(*tract.bbox)
-				# to save time, first check whether bounding boxes for tract and district intersect
-				if t.intersects(dbox):
-					tr = sg.asShape(tract)
-					# check whether geometries actually intersect
-					if d.intersects(tr):
-						# compute area of overlap
-						area = d.intersection(t).area
-						# append to output
-						entries.append([geoID, tid, area, area/t.area])
+	# 	# iterate over relevant districts to perform computations
+	# 	for geoID, district in state_to_districts[state]:
+	# 		# translate to shapely geometries 
+	# 		d = sg.asShape(district)
+	# 		dbox = sg.box(*sg.asShape(district).bounds)
+	# 		# initialize sets to count boundary and member nodes
+	# 		dboundary = set()
+	# 		dmember = set()
+	# 		# iterate over tracts 
+	# 		for tid,tract in GEOID_to_TRACT.items():
+	# 			# create bounding box for the district
+	# 			t = sg.box(*tract.bbox)
+	# 			# to save time, first check whether bounding boxes for tract and district intersect
+	# 			if t.intersects(dbox):
+	# 				tr = sg.asShape(tract)
+	# 				# check whether geometries actually intersect
+	# 				if d.intersects(tr):
+	# 					# compute area of overlap
+	# 					area = d.intersection(t).area
 
-						# check whether node is boundary or member
-						is_boundary = d.intersection(t.buffer(0.001)).area/t.buffer(0.001).area < 1
-						if is_boundary:
-							dboundary.update([tid])
-						dmember.update([tid])
-			# append an entry for this district
-			node_membership.append([geoID,len(dboundary),len(dmember)])
-	return node_membership, entries
+	# 					# check if threshold is met
+	# 					if area/t.area<threshold:
+	# 						continue
+
+	# 					# append to output
+	# 					entries.append([geoID, tid, area, area/t.area])
+
+	# 					# check whether node is boundary or member
+	# 					is_boundary = d.intersection(t.buffer(boundary_buffer)).area/t.buffer(boundary_buffer).area < 1
+	# 					if is_boundary:
+	# 						dboundary.update([tid])
+	# 					dmember.update([tid])
+	# 		# append an entry for this district
+	# 		node_membership.append([geoID,len(dboundary),len(dmember)])
+	# return node_membership, entries
 
 
 
@@ -246,12 +385,12 @@ Determine if a polygon is a boundary node for another polygon
 
 return true iff sub is boundary node for super
 """
-def boundary_node(supr, sub, b=0.0001, threshold=0):
-	if !intersect(supr,sub):
-		return False
-	sg1=sg.asShape(supr)
-	sg2=sg.box(*sub.bbox).buffer(b)
-	if sg1.intersection(sg2).area/sg2.area<1-threshold:
-		return True
+# def boundary_node(supr, sub, b=0.0001, threshold=0):
+# 	if !intersect(supr,sub):
+# 		return False
+# 	sg1=sg.asShape(supr)
+# 	sg2=sg.box(*sub.bbox).buffer(b)
+# 	if sg1.intersection(sg2).area/sg2.area<1-threshold:
+# 		return True
 
-	return False
+# 	return False
