@@ -15,8 +15,8 @@ cd_shp_dir = "/Users/avelez/Documents/MGGG_UROP/data/shapefile_data/cb_2013_us_c
 sub_geoid_col = 'GEOID10'
 cd_col = 'GEOID'
 state_col = 'STATEFP'
-begin = -14
-end = -12
+begin = -11
+end = -9
 
 # obtain the lists-of-lists
 entries, node_membership = get_district_member_and_boundary_entities(shp_and_dbf_file_dir, cd_dbf_dir, cd_shp_dir, sub_geoid_col, cd_col, state_col, begin, end)
