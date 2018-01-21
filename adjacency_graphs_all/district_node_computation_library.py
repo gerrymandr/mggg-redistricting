@@ -1,7 +1,7 @@
 """
 This library contains several methods used in the computations for
-district-to-tract overlap area as well as node membership computations (boundary
-and member nodes)
+district-to-subunit overlap area as well as subunit membership computations 
+(boundary and member subunits)
 
 author: Alejandro Velez
 for use by the Metric Geometry and Gerrymandering Group and Gerrymandering analytics
