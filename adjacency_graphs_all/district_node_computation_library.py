@@ -161,7 +161,8 @@ def get_state_to_districts_map(dbf_dir, shp_dir, state_col, cd_col):
 	return {state[0]:[(geoid_list[i][0],district_list[i]) for i in range(len(district_list)) if state_list[i][0]==state[0]] for state in state_list}
 
 """
-Thread class definitions
+Thread class definitions - these are used to perform parallel overlap and 
+membership computations 
 """
 class file_thread(threading.Thread):
 	def __init__(self,subunit_file,dbf_file,geoid_col,state_to_districts_map,overlap_list,membership_list,begin,end, threshold, boundary_buffer):
@@ -328,69 +329,3 @@ def get_district_member_and_boundary_entities(shp_and_dbf_file_dir, cd_dbf_dir, 
 		t.join()
 
 	return entries,node_membership
-
-
-	# 	# map identifiers to tract geometries
-	# 	GEOID_to_TRACT = create_polymap(tract_file,dbf_file,sub_geoid_col)
-
-	# 	# parse to obtain relevant state code
-	# 	state = tract_file[begin:end]
-		
-	# 	# iterate over relevant districts to perform computations
-	# 	for geoID, district in state_to_districts[state]:
-	# 		# translate to shapely geometries 
-	# 		d = sg.asShape(district)
-	# 		dbox = sg.box(*sg.asShape(district).bounds)
-	# 		# initialize sets to count boundary and member nodes
-	# 		dboundary = set()
-	# 		dmember = set()
-	# 		# iterate over tracts 
-	# 		for tid,tract in GEOID_to_TRACT.items():
-	# 			# create bounding box for the district
-	# 			t = sg.box(*tract.bbox)
-	# 			# to save time, first check whether bounding boxes for tract and district intersect
-	# 			if t.intersects(dbox):
-	# 				tr = sg.asShape(tract)
-	# 				# check whether geometries actually intersect
-	# 				if d.intersects(tr):
-	# 					# compute area of overlap
-	# 					area = d.intersection(t).area
-
-	# 					# check if threshold is met
-	# 					if area/t.area<threshold:
-	# 						continue
-
-	# 					# append to output
-	# 					entries.append([geoID, tid, area, area/t.area])
-
-	# 					# check whether node is boundary or member
-	# 					is_boundary = d.intersection(t.buffer(boundary_buffer)).area/t.buffer(boundary_buffer).area < 1
-	# 					if is_boundary:
-	# 						dboundary.update([tid])
-	# 					dmember.update([tid])
-	# 		# append an entry for this district
-	# 		node_membership.append([geoID,len(dboundary),len(dmember)])
-	# return node_membership, entries
-
-
-
-	
-	
-"""
-boundary_node
-Determine if a polygon is a boundary node for another polygon
-
-@param super super-unit polygon (ie. congressional district)
-@param sub sub-unit polygon (ie. census tract)
-
-return true iff sub is boundary node for super
-"""
-# def boundary_node(supr, sub, b=0.0001, threshold=0):
-# 	if !intersect(supr,sub):
-# 		return False
-# 	sg1=sg.asShape(supr)
-# 	sg2=sg.box(*sub.bbox).buffer(b)
-# 	if sg1.intersection(sg2).area/sg2.area<1-threshold:
-# 		return True
-
-# 	return False
