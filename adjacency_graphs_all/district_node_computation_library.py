@@ -24,6 +24,8 @@ import collections
 import shapely.geometry as sg
 import pandas as pd
 import threading
+from shapely.geometry import mapping
+import fiona
 
 """
 create_polymap
@@ -165,7 +167,7 @@ Thread class definitions - these are used to perform parallel overlap and
 membership computations 
 """
 class file_thread(threading.Thread):
-	def __init__(self,subunit_file,dbf_file,geoid_col,state_to_districts_map,overlap_list,membership_list,begin,end, threshold, boundary_buffer):
+	def __init__(self,subunit_file,dbf_file,geoid_col,state_to_districts_map,overlap_list,membership_list,begin,end, threshold, boundary_buffer,writer):
 		threading.Thread.__init__(self)
 		self.subunit_file = subunit_file
 		self.dbf_file = dbf_file
@@ -177,6 +179,7 @@ class file_thread(threading.Thread):
 		self.end = end
 		self.threshold = threshold
 		self.boundary_buffer = boundary_buffer
+		self.w = writer
 
 	def run(self):
 		# map identifiers to subunit geometries
@@ -188,14 +191,14 @@ class file_thread(threading.Thread):
 		threads = []
 
 		for geoID, district in self.state_to_districts[state]:
-			thread = unit_thread(geoID_to_subunit, self.entries,self.node_membership,geoID,district,self.threshold, self.boundary_buffer)
+			thread = unit_thread(geoID_to_subunit, self.entries,self.node_membership,geoID,district,self.threshold, self.boundary_buffer, self.w)
 			thread.start()
 			threads.append(thread)
 		for t in threads:
 			t.join()
 
 class unit_thread(threading.Thread):
-	def __init__(self,subunit_map, overlap_list, membership_list,geoID,unit,threshold,boundary_buffer):
+	def __init__(self,subunit_map, overlap_list, membership_list,geoID,unit,threshold,boundary_buffer, writer):
 		threading.Thread.__init__(self)
 		self.geoID_to_subunit = subunit_map
 		self.entries = overlap_list
@@ -204,6 +207,7 @@ class unit_thread(threading.Thread):
 		self.unit = unit
 		self.threshold = threshold
 		self.boundary_buffer = boundary_buffer
+		self.w = writer
 
 	def run(self):
 		# create shapely geometries
@@ -217,7 +221,7 @@ class unit_thread(threading.Thread):
 		threads = []
 		# iterate over subunits
 		for sid,subunit in self.geoID_to_subunit.items():
-			thr = subunit_thread(sid,subunit,self.entries,self.node_membership,self.geoID,d,dbox,setLock,listLock,self.threshold,self.boundary_buffer,dboundary,dmember)
+			thr = subunit_thread(sid,subunit,self.entries,self.node_membership,self.geoID,d,dbox,setLock,listLock,self.threshold,self.boundary_buffer,dboundary,dmember, self.w)
 			thr.start()
 			threads.append(thr)
 		# Wait for all threads to terminate
@@ -227,7 +231,7 @@ class unit_thread(threading.Thread):
 		self.node_membership.append([self.geoID,len(dboundary),len(dmember)])
 
 class subunit_thread(threading.Thread):
-	def __init__(self,subunit_id,subunit_geom,entries,node_membership,unit_geoID,unit,unit_bbox,setLock,listLock,threshold,boundary_buffer,dboundary,dmember):
+	def __init__(self,subunit_id,subunit_geom,entries,node_membership,unit_geoID,unit,unit_bbox,setLock,listLock,threshold,boundary_buffer,dboundary,dmember,writer):
 		threading.Thread.__init__(self)
 		self.sid = subunit_id
 		self.subunit = subunit_geom
@@ -242,6 +246,7 @@ class subunit_thread(threading.Thread):
 		self.boundary_buffer = boundary_buffer
 		self.dboundary = dboundary
 		self.dmember = dmember
+		self.w = writer
 
 	def run(self):
 		# create bounding box for the subunit
@@ -272,10 +277,14 @@ class subunit_thread(threading.Thread):
 
 				# check if subunit is boundary or member
 				is_boundary = self.unit.intersection(s_shapely.buffer(s_area)).area/s_shapely.buffer(s_area).area<1
-				with self.setLock: #acquire setLock
+				with self.setLock: # acquire setLock
 					if is_boundary:
 						self.dboundary.update([self.sid])
 					self.dmember.update([self.sid])
+					self.w.write({
+						'geometry':mapping(self.subunit),
+						'properties':{'is boundary':int(is_boundary), 'id':str(self.sid)},
+						})
 
 
 
@@ -302,11 +311,12 @@ file
 @param state_col string identifier for the FIPS code field in the district dbf file
 @param begin starting index for the state identifier in sub-unit filenames
 @param end ending index for the state identifier in the sub-unit filenames
+@param name of the shp file to be output for visualization of boundary and member nodes
 @param threshold for node membership, default is 0.1 (10%)
 @param boundary_buffer to be added to subunit boundaries for computation accurary, default is 0.001
 
 """
-def get_district_member_and_boundary_entities(shp_and_dbf_file_dir, cd_dbf_dir, cd_shp_dir, sub_geoid_col, cd_col, state_col, begin, end, threshold=0.1, boundary_buffer=0.001):
+def get_district_member_and_boundary_entities(shp_and_dbf_file_dir, cd_dbf_dir, cd_shp_dir, sub_geoid_col, cd_col, state_col, begin, end, name, threshold=0.1, boundary_buffer=0.001):
 	# zip tract shp filenames to corresponding dbf filenames
 	files = get_dbf_shp_files(shp_and_dbf_file_dir)
 
@@ -318,14 +328,24 @@ def get_district_member_and_boundary_entities(shp_and_dbf_file_dir, cd_dbf_dir, 
 	node_membership = []
 	threads = []
 
-	# iterate over the sub-unit files, multi-thread
-	for subunit_file, dbf_file in files:
-		thread = file_thread(subunit_file,dbf_file,sub_geoid_col,state_to_districts,entries,node_membership,begin,end,threshold,boundary_buffer)
-		thread.start()
-		threads.append(thread)
+	# initialize an shp file to write objects to for visualization purposes
 
-	#check all threads terminated
-	for t in threads:
-		t.join()
+	# schema for the file
+	schema = {
+	'geometry':'Polygon',
+	'properties':{'is boundary':'int','id':'str'}
+	}
+
+	with fiona.open(name,'w','ESRI Shapefile', schema) as output:
+
+		# iterate over the sub-unit files, multi-thread
+		for subunit_file, dbf_file in files:
+			thread = file_thread(subunit_file,dbf_file,sub_geoid_col,state_to_districts,entries,node_membership,begin,end,threshold,boundary_buffer,output)
+			thread.start()
+			threads.append(thread)
+
+		#check all threads terminated
+		for t in threads:
+			t.join()
 
 	return entries,node_membership
