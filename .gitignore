@@ -1,0 +1,15 @@
+*~
+*.pyc
+*.egg-info
+build/
+dist/
+docs/build
+tags
+.idea/
+MANIFEST
+ve
+venv
+junit.xml
+.cache
+.DS_Store
+*.icloud
