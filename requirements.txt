@@ -1,8 +1,0 @@
-fiona
-matplotlib
-numpy
-palettable
-pandas
-pysal
-scipy
-shapely
