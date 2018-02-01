@@ -1,3 +1,14 @@
+## Target tasks
+
+1. load shapefile and accompanying dbf file (associate district id, geoID)
+2. compute adjacency (twostep algorithm).  Output mutable object representing graph.
+3. provide methods for manually modifying adjacency entries
+4. save/load graph objects
+5. plot graph objects overlaid with/without district boundary data
+
+
+## Current code
+
 compute_tract_membership_and_overlap_with_districts.py:
   * twostep
   * modified_twostep
