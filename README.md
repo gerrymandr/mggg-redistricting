@@ -1,4 +1,7 @@
 # Census Data Mapping Project
+
+[![CircleCI](https://circleci.com/gh/msarahan/state-adjacency-graphs.svg?style=svg)](https://circleci.com/gh/msarahan/state-adjacency-graphs)
+
 The code used in this project was used to create adjacency graphs and other data structures to model relationships between congressional districts, census tracts, and other census units and subunits. The main functions which can be executed using the code in this project are: creating adjacency graphs & matrices, visualizing these data structures, and computing compactness scores and other measures using member and border nodes. The code is also specifically adapted to working with census data and includes ways of labeling and identifying entries based on GEOIDs. The main and most useful functions have been formalized and documented in district_node_computation_library.py
 
 ## Getting Started
