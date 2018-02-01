@@ -16,14 +16,14 @@ def visualize_adjacency_graph(mggg_graph, fig=None, out_dir=None):
     if not fig:
         fig = plt.figure(figsize=(9, 9))
     fig.set_facecolor('white')
-    base = maps.map_poly_shp(mggg_graph.pysal_shp_obj)
+    base = maps.map_poly_shp(mggg_graph.loaded_geodata)
     base.set_linewidth(0.75)
     base.set_facecolor('none')
     base.set_edgecolor('0.8')
 
     # obtain the centroids of polygons
     polygon_centroids = {x: y.centroid
-                         for x, y in enumerate(mggg_graph.pysal_shp_obj)}
+                         for x, y in enumerate(mggg_graph.loaded_geodata)}
 
     # connect centroids of the polygons using LineCollection
     edge_list = ((polygon_centroids[poly1], polygon_centroids[poly2])
@@ -32,7 +32,7 @@ def visualize_adjacency_graph(mggg_graph, fig=None, out_dir=None):
     edge_list = LineCollection(edge_list)
 
     edge_list.set_linewidth(0.20)
-    ax = maps.setup_ax([base, edge_list], [mggg_graph.pysal_shp_obj.bbox,
-                                           mggg_graph.pysal_shp_obj.bbox])
+    ax = maps.setup_ax([base, edge_list], [mggg_graph.loaded_geodata.bbox,
+                                           mggg_graph.loaded_geodata.bbox])
     fig.add_axes(ax)
     return fig
