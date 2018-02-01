@@ -16,6 +16,8 @@ requirements = [
     'pysal',
     'scipy',
     'shapely',
+    'matplotlib',
+    'palettable',
 ]
 
 setup(

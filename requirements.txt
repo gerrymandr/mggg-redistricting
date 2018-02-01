@@ -1,0 +1,9 @@
+fiona
+numpy
+pandas
+pysal
+scipy
+shapely
+matplotlib
+palettable
+pytest
