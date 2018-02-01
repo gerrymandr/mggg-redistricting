@@ -15,9 +15,7 @@ from matplotlib.collections import LineCollection
 import glob
 import collections
 import shapely.geometry as sg
-# import csv
 import pandas as pd
-# import shapefile
 import threading
 
 # INPUTS

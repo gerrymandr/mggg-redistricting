@@ -1,0 +1,27 @@
+{% set data = load_setup_py_data() %}
+
+package:
+  name: adjacency_graphs
+  version: 0.1.0
+
+source:
+  path: ..
+
+build:
+  script: python setup.py install --single-version-externally-managed --record=record.txt
+
+requirements:
+  build:
+    - python
+    - setuptools
+
+  run:
+    - python
+    # dependencies are defined in setup.py
+    {% for dep in data['install_requires'] %}
+    - {{ dep.lower() }}
+    {% endfor %}
+
+about:
+  home: https://github.com/gerrymandr/state-adjacency-graphs
+  summary: computes adjacency graphs from district boundary data
