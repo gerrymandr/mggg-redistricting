@@ -55,8 +55,8 @@ class TwoStepGraph(object):
         if loaded_geodata is not None:
             self.loaded_geodata = loaded_geodata
         else:
-            self.loaded_geodata = ps.open()
+            self.loaded_geodata = ps.open(shp_path)
             self._loaded_polymap = _create_polymap(shp_path,
                                                    self.loaded_geodata,
                                                    geoid_column)
-        self.neighbors = self._mggg_twostep()
+        self.neighbors = _twostep(self._loaded_polymap)
