@@ -1,1 +1,2 @@
 from twostep import TwoStepGraph
+from modified_twostep import ModifiedTwoStepGraph
