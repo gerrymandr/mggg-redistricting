@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/msarahan/state-adjacency-graphs.svg?style=svg)](https://circleci.com/gh/msarahan/state-adjacency-graphs)
+
 ## Target tasks
 
 1. load shapefile and accompanying dbf file (associate district id, geoID)
