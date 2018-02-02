@@ -1,6 +1,6 @@
 import collections
 import pysal as ps
-from adjacency_graph.utils import create_polymap
+from adjacency_graphs.utils import create_polymap
 
 
 def _twostep(polymap):
