@@ -1,43 +1,69 @@
 [![CircleCI](https://circleci.com/gh/msarahan/state-adjacency-graphs.svg?style=svg)](https://circleci.com/gh/msarahan/state-adjacency-graphs)
 
-## Target tasks
+## About
 
-1. load shapefile and accompanying dbf file (associate district id, geoID)
-2. compute adjacency (twostep algorithm).  Output mutable object representing graph.
-3. provide methods for manually modifying adjacency entries
-4. save/load graph objects
-5. plot graph objects overlaid with/without district boundary data
+Given a shape file (for districts, vtd's, etc.) and a geo ID, returns a graph representation of the shape file
+that can be input to other projects that use graph representation as their input.
 
-
-## Current code
-
-compute_tract_membership_and_overlap_with_districts.py:
-  * twostep
-  * modified_twostep
-  * using pandas to open .dbf file
-  * building district-to-geoid map from .dbf
-  * compute tract membership in district (buffer method)
-  
-  
-adj_graph_map_layer.py:
-  * create shapefile from csv data
-  
-
-adj_matrix_gen.py:
-  * tabulate/aggregate adjacency files
-  
-  
-district_node_computation_library.py:
-  * create_polymap (input shp_dir, dbf_dir, geoid_column)
-  * get_dbf_shp_files(directory)
-  * mggg_twostep(polymap)
-  * visualize_adjacency_graph(file_dir, out_dir=None)
-  
-block_groups.py:
-  * run orchestration of district_node_computation_library.get_district_member_and_boundary_entities
-  * write overlap/membership CSVs
+Input expected:
+ 1. shp_path (shape file path)
+ 2. column ID of unique boundary (e.g. district ID, geo ID in the .dbf file)
  
- 
-tracts.py:
-  * same as block_groups.py, with different inputs
+Output returned: TBD
 
+
+## How to Install
+
+pip intstall . ### !needs to be completed! ###
+
+
+## How to Run
+
+### CLI Instructions ###
+
+Default CLI command: TBD
+
+Optional CLI arguments: TBD
+
+### Python Script Instructions ###
+
+Sample Script:
+
+ from adjacency_graphs.algorithms import TwoStepGraph
+
+ shp_path = ‘tests/shapefiles/testershape.shp’ # desired shape file path
+ geoid_column = ‘id’                           # desired geo ID from .dbf
+ my_graph = TwoStepGraph(shp_dir, geoid_column)
+ 
+(also see example_pipeline.py)
+
+
+## What's in the package
+
+Algorithms
+ 1. twostep.py
+Plots
+ 1. mpl.py (see:[matplotlib](https://matplotlib.org/))
+ 
+
+## Authors ##
+
+Austin Hackathon Participants
+### ! Add names if desired! ###
+Nel Abdiel
+Mary Barker
+Sarah Hager
+Anne Hanna
+Allan Peng
+Seth Rothschild
+Michael Sarahan
+
+with acknowledgment to Duke Hackathon Participants and others:
+Sarah Von Ahn
+Richard Barnes
+Mira Bernstein
+Moon Duchin
+Gabriel Ramirez
+Ria Das
+Justin Solomon
+Alejandro Velez
