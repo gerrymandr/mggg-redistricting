@@ -1,3 +1,6 @@
+import pysal as ps
+
+
 def create_polymap(shp_path, pysal_shp_obj, geoid_column):
     split = shp_path.split('.')
     split[-1] = 'dbf'
