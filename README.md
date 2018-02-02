@@ -50,20 +50,23 @@ Plots
 
 Austin Hackathon Participants
 ### ! Add names if desired! ###
-Nel Abdiel
-Mary Barker
-Sarah Hager
-Anne Hanna
-Allan Peng
-Seth Rothschild
+Nel Abdiel,
+Mary Barker,
+Sarah Hager,
+Anne Hanna,
+Allan Peng,
+Seth Rothschild,
 Michael Sarahan
 
 with acknowledgment to Duke Hackathon Participants and others:
-Sarah Von Ahn
-Richard Barnes
-Mira Bernstein
-Moon Duchin
-Gabriel Ramirez
-Ria Das
-Justin Solomon
+Sarah Von Ahn,
+Richard Barnes,
+Mira Bernstein,
+Moon Duchin,
+Gabriel Ramirez,
+Ria Das,
+Justin Solomon,
 Alejandro Velez
+
+## Documentation ##
+Please note future updates to this project in the[MGGG Software Guide](https://docs.google.com/document/d/1aEl7znLggJW95gRhnefzS3dVE8iE7NZa3VaXZNmok5g/edit?usp=sharing)
