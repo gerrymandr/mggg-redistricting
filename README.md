@@ -69,4 +69,4 @@ Justin Solomon,
 Alejandro Velez
 
 ## Documentation ##
-Please note future updates to this project in the [MGGG Software Guide](https://docs.google.com/document/d/1aEl7znLggJW95gRhnefzS3dVE8iE7NZa3VaXZNmok5g/edit?usp=sharing)
+Please document future updates to this project in the [MGGG Software Guide](https://docs.google.com/document/d/1aEl7znLggJW95gRhnefzS3dVE8iE7NZa3VaXZNmok5g/edit?usp=sharing)
