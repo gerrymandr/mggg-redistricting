@@ -32,12 +32,13 @@ def _twostep(polymap):
 # TODO: it might be nice to use abstract base classes here to define a
 #       standard interface that all Graph objects should follow.
 class TwoStepGraph(object):
-    """ Take in a path to a shapefile and create a graph. If a pysal object
+    """Take in a path to a shapefile and create a graph. If a pysal object
         (loaded from a shapefile) is given for the loaded_geodata argument,
         that object is used instead of any shp_path argument.
 
-        Analysis of adjacency is done with the two-step algorithm defined
-        in https://github.com/gerrymandr/state-adjacency-graphs/blob/master/scipy_conference_scaling_adjacency_algos.pdf
+        Analysis of adjacency is done with the two-step
+        algorithm defined in
+        https://github.com/gerrymandr/state-adjacency-graphs/blob/master/scipy_conference_scaling_adjacency_algos.pdf
 
         Input:
             loaded_geodata (object): A pysal-created object from opening a
@@ -49,6 +50,8 @@ class TwoStepGraph(object):
         Attributes:
             neighbors (dict): the neighbors as defined by mgg_twostep
             loaded_geodata: the pysal object representing the shp_path
+            loaded_polymap: a polymap generated from loaded_geodata
+
     """
 
     def __init__(self, shp_path='', geoid_column='', loaded_geodata=None):
@@ -56,7 +59,7 @@ class TwoStepGraph(object):
             self.loaded_geodata = loaded_geodata
         else:
             self.loaded_geodata = ps.open(shp_path)
-            self._loaded_polymap = _create_polymap(shp_path,
-                                                   self.loaded_geodata,
-                                                   geoid_column)
+            self.loaded_polymap = _create_polymap(shp_path,
+                                                  self.loaded_geodata,
+                                                  geoid_column)
         self.neighbors = _twostep(self._loaded_polymap)
