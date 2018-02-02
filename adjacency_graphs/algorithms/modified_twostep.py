@@ -13,7 +13,7 @@ def _create_polymap(shp_path, pysal_shp_obj, geoid_column):
     return {geoid_list[i][0]: geom_list[i] for i in range(len(geom_list))}
 
 
-def modified_twostep(polymap):
+def _modified_twostep(polymap):
     shpFileObject = polymap
     # if shpFileObject.type != ps.cg.Polygon:
     # 	return
