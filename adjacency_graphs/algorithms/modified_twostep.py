@@ -1,16 +1,6 @@
 import collections
 import pysal as ps
-
-
-def _create_polymap(shp_path, pysal_shp_obj, geoid_column):
-    split = shp_path.split('.')
-    split[-1] = 'dbf'
-    dbf_dir = '.'.join(split)
-    dbf = ps.open(dbf_dir)
-
-    geoid_list = dbf.by_col_array(geoid_column)
-    geom_list = [x for x in pysal_shp_obj]
-    return {geoid_list[i][0]: geom_list[i] for i in range(len(geom_list))}
+from adjacency_graphs.utils import create_polymap
 
 
 def _modified_twostep(polymap):
@@ -62,7 +52,7 @@ class ModifiedTwoStepGraph(object):
             self.loaded_geodata = loaded_geodata
         else:
             self.loaded_geodata = ps.open(shp_path)
-            self.loaded_polymap = _create_polymap(shp_path,
-                                                  self.loaded_geodata,
-                                                  geoid_column)
+            self.loaded_polymap = create_polymap(shp_path,
+                                                 self.loaded_geodata,
+                                                 geoid_column)
         self.neighbors = _modified_twostep(self.loaded_polymap)
