@@ -1,2 +1,2 @@
-from twostep import TwoStepGraph
-from modified_twostep import ModifiedTwoStepGraph
+from adjacency_graphs.algorithms.twostep import TwoStepGraph
+from adjacency_graphs.algorithms.modified_twostep import ModifiedTwoStepGraph
