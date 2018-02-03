@@ -10,7 +10,7 @@ geoid_column_name = 'column_name'
 
 my_graph = TwoStepGraph(shp_path, geoid_column)
 ```
-
+![Pennsylvania Graph](examples/penn.png)
 
 ## Quickstart
 
