@@ -12,4 +12,4 @@ my_graph = TwoStepGraph(shp_dir, geoid_column)
 fig = visualize_adjacency_graph(my_graph)
 savefig('example.png')
 
-export_graph('example_graph.csv')
+export_graph(my_graph, 'example_graph.csv')

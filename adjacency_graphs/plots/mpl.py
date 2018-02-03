@@ -47,6 +47,4 @@ def visualize_adjacency_graph(mggg_graph, out_dir=None):
     # save your output
     if(out_dir is not None):
         savefig(out_dir)
-    import pdb
-    pdb.set_trace()
     return fig
