@@ -1,8 +1,7 @@
 # The Adjacency Graphs Project
 [![CircleCI](https://circleci.com/gh/msarahan/state-adjacency-graphs.svg?style=svg)](https://circleci.com/gh/msarahan/state-adjacency-graphs)
-
 ## About
-This is a project for managing Adjacency Graphs in python. There are package components for **algorithms** to generate adjacency maps from shapefiles, make **plots** from the result and **export** graphs. Once the package is [installed](##Quickstart), you can quickly build an adjacency graph with one of our built-in algorithms as follows:
+This is a project for managing Adjacency Graphs in python. There are package components for **algorithms** to generate adjacency maps from shapefiles, make **plots** from the result and **export** graphs. Once the package is [installed](docs/install_and_faq.md), you can quickly build an adjacency graph with one of our built-in algorithms as follows:
 ```
 from adjacency_graphs.algorithms import TwoStepGraph
 
