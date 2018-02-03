@@ -4,13 +4,15 @@ from matplotlib.collections import LineCollection
 from pysal.contrib.viz import mapping as maps
 
 
-"""
-visualize_adjacency_graph
-create and visualize an adjacency graph of geometries in an shp file.
-"""
-
-
 def visualize_adjacency_graph(mggg_graph, out_dir=None):
+    ''' Visualize an adjacency graph
+        Input: 
+            mggg_graph (Graph): A graph object from adjacency_graphs.algorithms
+            out_dir (string, optional): Path to the output file. If none provided,
+                                        no file will be created
+        Output:
+            fig (matplotlib.pyplot): An object which can be plotted
+    '''
     # open the file and obtain pysal geometries
     shp = mggg_graph.loaded_geodata
     # setting up matplot figure
@@ -47,3 +49,4 @@ def visualize_adjacency_graph(mggg_graph, out_dir=None):
         savefig(out_dir)
     import pdb
     pdb.set_trace()
+    return fig
