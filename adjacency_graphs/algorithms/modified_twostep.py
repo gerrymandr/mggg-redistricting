@@ -50,6 +50,10 @@ class ModifiedTwoStepGraph(object):
     def __init__(self, shp_path='', geoid_column='', loaded_geodata=None):
         self.shp_path = shp_path
         self.id_column = geoid_column
+        data = ps.pdio.read_files(shp_path)
+        data['CENTROID_XCOORDINATES'] = data.apply(lambda x: x['geometry'].centroid[0], 1)
+        data['CENTROID_YCOORDINATES'] = data.apply(lambda x: x['geometry'].centroid[1], 1)
+        self.shape_df = data
         self.loaded_geodata = ps.open(shp_path)
         self.loaded_polymap = create_polymap(shp_path,
                                              self.loaded_geodata,
