@@ -45,12 +45,11 @@ class TwoStepGraph(object):
     """
 
     def __init__(self, shp_path='', geoid_column='', loaded_geodata=None):
-        if loaded_geodata is not None:
-            self.loaded_geodata = loaded_geodata
-        else:
-            self.loaded_geodata = ps.open(shp_path)
+        self.shp_path = shp_path
+        self.id_column = geoid_column
 
-            self.loaded_polymap = create_polymap(shp_path,
-                                                 self.loaded_geodata,
-                                                 geoid_column)
+        self.loaded_geodata = ps.open(shp_path)
+        self.loaded_polymap = create_polymap(shp_path,
+                                             self.loaded_geodata,
+                                             geoid_column)
         self.neighbors = _twostep(self.loaded_polymap)
