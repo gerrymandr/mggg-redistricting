@@ -1,0 +1,21 @@
+Austin Hackathon Team
+-----
+Nel Abdiel,
+Mary Barker,
+Sarah Hager,
+Anne Hanna,
+Allan Peng,
+Seth Rothschild,
+Michael Sarahan
+
+
+Base state-adjacency-graphs project 
+-----
+Sarah Von Ahn and Alejandro Velez - Authors
+Gabriel Ramirez, Ria Das - Other undergraduate researchers
+Richard Barnes - Advice on how to access census data
+
+
+Special thanks
+-----
+Justin Solomon, Moon Duchin, Mira Bernstein - MGGG project

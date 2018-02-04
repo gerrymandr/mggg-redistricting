@@ -1,72 +1,47 @@
+# The Adjacency Graphs Project
 [![CircleCI](https://circleci.com/gh/msarahan/state-adjacency-graphs.svg?style=svg)](https://circleci.com/gh/msarahan/state-adjacency-graphs)
-
 ## About
+This is a project for managing Adjacency Graphs in python. There are package components for **algorithms** to generate adjacency maps from shapefiles, make **plots** from the result and **export** graphs. Once the package is [installed](docs/install_and_faq.md), you can quickly build an adjacency graph with one of our built-in algorithms as follows:
+```
+from adjacency_graphs.algorithms import TwoStepGraph
 
-Given a shape file (for districts, vtd's, etc.) and a geo ID, returns a graph representation of the shape file
-that can be input to other projects that use graph representation as their input.
+shp_path = '/path/to/shape.shp'
+geoid_column_name = 'column_name'
 
-Input expected:
- 1. shp_path (shape file path)
- 2. column ID of unique boundary (e.g. district ID, geo ID in the .dbf file)
- 
-Output returned: TBD
+my_graph = TwoStepGraph(shp_path, geoid_column)
+```
+![Pennsylvania Graph](examples/penn.png)
 
+## Quickstart
 
-## How to Install
+To install first download the project
+from
+[this](https://github.com/msarahan/state-adjacency-graphs)
+github repository. Then, open a terminal and navigate to the folder by running
+```
+cd /path/to/state-adjacency-graphs
+```
+The python package can then be installed by running the command
+```
+pip install .
+```
+That will install the `adjacency_graphs` package and all of the dependencies. To see if the package has correctly installed, run
+```
+python examples/example_pipeline.py
+```
 
-pip intstall . ### !needs to be completed! ###
+## Contributing
 
-
-## How to Run
-
-### CLI Instructions ###
-
-Default CLI command: TBD
-
-Optional CLI arguments: TBD
-
-### Python Script Instructions ###
-
-Sample Script:
-
- from adjacency_graphs.algorithms import TwoStepGraph
-
- shp_path = ‘tests/shapefiles/testershape.shp’ # desired shape file path
- geoid_column = ‘id’                           # desired geo ID from .dbf
- my_graph = TwoStepGraph(shp_dir, geoid_column)
- 
-(also see example_pipeline.py)
-
-
-## What's in the package
-
-Algorithms
- 1. twostep.py
-Plots
- 1. mpl.py (see:[matplotlib](https://matplotlib.org/))
- 
-
-## Authors ##
-
-Austin Hackathon Participants
-### ! Add names if desired! ###
-Nel Abdiel,
-Mary Barker,
-Sarah Hager,
-Anne Hanna,
-Allan Peng,
-Seth Rothschild,
-Michael Sarahan
-
-with acknowledgment to Duke Hackathon Participants and others:
-Sarah Von Ahn,
-Richard Barnes,
-Mira Bernstein,
-Moon Duchin,
-Gabriel Ramirez,
-Ria Das,
-Justin Solomon,
-Alejandro Velez
+There is a [guide](docs/development_guide.md) for first time
+contributors to this project. This project is a fork from
+the
+original
+[state-adjacency-graphs](https://github.com/gerrymandr/state-adjacency-graphs) and
+would not have been possible without contributions from
+the
+[Austin Gerrymandering Hackathon](https://www.ma.utexas.edu/users/blumberg/gerrymandering.html).
+A full contributors list can be found
+at [contributors.txt](docs/contributors.txt).
 
 ## Documentation ##
 Please document future updates to this project in the [MGGG Software Guide](https://docs.google.com/document/d/1aEl7znLggJW95gRhnefzS3dVE8iE7NZa3VaXZNmok5g/edit?usp=sharing)
