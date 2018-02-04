@@ -11,22 +11,21 @@ jobs:
 
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "environment.yml" }}
+          - v1-dependencies-{{ checksum "tests/tests_environment.yml" }}
           - v1-dependencies-
 
       - run:
           name: install dependencies
           command: |
-            conda env create -q || conda env update -q
+            conda env create -q -f tests/tests_environment.yml || conda env update -q -f tests/tests_environment.yml
             source activate adj
-            conda install -qy pytest
             conda clean -ay
             pip install -e .
 
       - save_cache:
           paths:
             - /opt/conda
-          key: v1-dependencies-{{ checksum "environment.yml" }}
+          key: v1-dependencies-{{ checksum "tests/tests_environment.yml" }}
 
       - run:
           name: run tests

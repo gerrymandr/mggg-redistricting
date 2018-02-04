@@ -1,13 +1,10 @@
 name: adj
 channels:
+  - gerrymandr
   - conda-forge
   - defaults
 dependencies:
   - python
-  - matplotlib
-  - pandas
-  - pysal
-  - palettable
-  - fiona
-  - notebook
+  - adjacency_graphs
+  # this is just to reduce download size.  It can be safely removed.
   - nomkl

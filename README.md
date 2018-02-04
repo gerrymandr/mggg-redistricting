@@ -38,18 +38,17 @@ source activate adj
 Note: on Windows, omit "source" in the line above.
 
 
-The python package can then be installed by running the command
+That will create the environment, including installing the `adjacency_graphs`
+package and all of the dependencies. To see if the package has correctly
+installed, run
 
 ```
-pip install .
+cd examples
+python example_pipeline.py
 ```
 
-That will install the `adjacency_graphs` package and all of the dependencies. To
-see if the package has correctly installed, run
-
-```
-python examples/example_pipeline.py
-```
+This will generate the example.png and example_graph.csv files, showing the
+potential outputs of this program.
 
 ## Contributing
 
