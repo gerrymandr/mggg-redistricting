@@ -24,7 +24,7 @@ def visualize_adjacency_graph(mggg_graph, out_dir=None):
     base.set_edgecolor('0.8')
 
     # Build a dictionary to associate geoid and index.
-    data = ps.pdio.read_files(mggg_graph.shp_path)
+    data = mggg_graph.shape_df
     gti = {}
     for index, row in data.iterrows():
         gti[row[mggg_graph.id_column]] = index
@@ -47,6 +47,4 @@ def visualize_adjacency_graph(mggg_graph, out_dir=None):
     # save your output
     if(out_dir is not None):
         savefig(out_dir)
-    import pdb
-    pdb.set_trace()
     return fig
