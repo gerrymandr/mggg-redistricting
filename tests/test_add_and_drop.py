@@ -1,21 +1,21 @@
-from adjacency_graphs.utils.edge_modification import add_edge, drop_edge
+import os
+from adjacency_graphs.algorithms import TwoStepGraph
 
-
-class MyGraph(object):
-    def __init__(self):
-        dict = {0: set([0, 1]), 1: set([0, 1]), 2: set([2])}
-        self.neighbors = dict
+thisdir = os.path.dirname(__file__)
+shp_dir = os.path.join(os.path.dirname(thisdir), 'tests', 'shapefiles')
 
 
 def test_add_edge():
-    graph = MyGraph()
-    add_edge(graph, (1, 2))
-    assert 2 in graph.neighbors[1]
-    assert 1 in graph.neighbors[2]
+    graph = TwoStepGraph(os.path.join(shp_dir, 'testershape.shp'),
+                         id_column='id')
+    graph.add_edge((1, 3))
+    assert 1 in graph.neighbors[3]
+    assert 3 in graph.neighbors[1]
 
 
 def test_drop_edge():
-    graph = MyGraph()
-    drop_edge(graph, (0, 1))
+    graph = TwoStepGraph(os.path.join(shp_dir, 'testershape.shp'),
+                         id_column='id')
+    graph.drop_edge((0, 1))
     assert 0 not in graph.neighbors[1]
     assert 1 not in graph.neighbors[0]
