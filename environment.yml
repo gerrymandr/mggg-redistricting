@@ -10,3 +10,4 @@ dependencies:
   - palettable
   - fiona
   - notebook
+  - nomkl
