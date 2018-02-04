@@ -1,6 +1,7 @@
 import collections
 import pysal as ps
 from adjacency_graphs.utils import create_polymap
+from adjacency_graphs import MgggGraph
 
 
 def _twostep(polymap):
@@ -19,40 +20,37 @@ def _twostep(polymap):
     return w
 
 
-# TODO: it might be nice to use abstract base classes here to define a
-#       standard interface that all Graph objects should follow.
-class TwoStepGraph(object):
-    """Take in a path to a shapefile and create a graph. If a pysal object
-        (loaded from a shapefile) is given for the loaded_geodata argument,
-        that object is used instead of any shp_path argument.
-
+def TwoStepGraph(shp_path, id_column):
+    """ Take in a path to a shapefile and create a graph.
         Analysis of adjacency is done with the two-step
         algorithm defined in
         https://github.com/gerrymandr/state-adjacency-graphs/blob/master/scipy_conference_scaling_adjacency_algos.pdf
 
         Input:
-            loaded_geodata (object): A pysal-created object from opening a
-                   shp file
-            shp_path (string):
-            geoid_column (string): required if using shapedir, not
-                   loaded_geodata
+            shp_path (string): A path /path/to/shapefile.shp as a string.
+            id_column (string): The column on which create vertices.
 
-        Attributes:
-            neighbors (dict): the neighbors as defined by mgg_twostep
-            loaded_geodata: the pysal object representing the shp_path
-            loaded_polymap: a polymap generated from loaded_geodata
+        Output:
+            graph (MgggGraph): See adjacency_graphs/mggg_graph for details.
 
     """
 
-    def __init__(self, shp_path='', geoid_column='', loaded_geodata=None):
-        self.shp_path = shp_path
-        self.id_column = geoid_column
-        data = ps.pdio.read_files(shp_path)
-        data['CENTROID_XCOORDINATES'] = data.apply(lambda x: x['geometry'].centroid[0], 1)
-        data['CENTROID_YCOORDINATES'] = data.apply(lambda x: x['geometry'].centroid[1], 1)
-        self.shape_df = data
-        self.loaded_geodata = ps.open(shp_path)
-        self.loaded_polymap = create_polymap(shp_path,
-                                             self.loaded_geodata,
-                                             geoid_column)
-        self.neighbors = _twostep(self.loaded_polymap)
+    data = ps.pdio.read_files(shp_path)
+    data['CENTROID_XCOORDINATES'] = data.apply(
+        lambda x: x['geometry'].centroid[0], 1
+    )
+    data['CENTROID_YCOORDINATES'] = data.apply(
+        lambda x: x['geometry'].centroid[1], 1
+    )
+
+    loaded_geodata = ps.open(shp_path)
+    loaded_polymap = create_polymap(shp_path,
+                                    loaded_geodata,
+                                    id_column)
+    neighbors = _twostep(loaded_polymap)
+    return MgggGraph(shp_path=shp_path,
+                     id_column=id_column,
+                     shape_df=data,
+                     loaded_geodata=loaded_geodata,
+                     loaded_polymap=loaded_polymap,
+                     neighbors=neighbors)
