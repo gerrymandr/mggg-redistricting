@@ -27,7 +27,8 @@ setup(
     author="Gerry Mander",
     author_email='gerrymandr@gmail.com',
     url='https://github.com/gerrymandr/state-adjacency-graphs',
-    packages=['adjacency_graphs'],
+    packages=['adjacency_graphs', 'adjacency_graphs.utils',
+              'adjacency_graphs.plots', 'adjacency_graphs.algorithms'],
     entry_points={
         'console_scripts': [
             'adjacency_graphs=adjacency_graphs.cli:cli'
