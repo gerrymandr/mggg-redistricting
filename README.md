@@ -14,18 +14,39 @@ my_graph = TwoStepGraph(shp_path, geoid_column)
 
 ## Quickstart
 
-To install first download the project
-from
-[this](https://github.com/msarahan/state-adjacency-graphs)
-github repository. Then, open a terminal and navigate to the folder by running
+We recommend usage of Conda or virtualenv to work with this software. Directions
+for setting up conda are at https://conda.io/docs/user-guide/install/index.html
+
+We'll proceed here with directions for conda for the virtual environment, but
+we'll use pip to install our packages.
+
+We don't have this package on PyPI yet.  To install, download or clone the project:
+
 ```
-cd /path/to/state-adjacency-graphs
+git clone https://github.com/msarahan/state-adjacency-graphs
+cd state-adjacency-graphs
 ```
+
+We include the environment definition that conda should create in the
+environment.yml file. That's why we ask you to download the source first.
+
+```
+conda env create 
+source activate adj
+```
+
+Note: on Windows, omit "source" in the line above.
+
+
 The python package can then be installed by running the command
+
 ```
 pip install .
 ```
-That will install the `adjacency_graphs` package and all of the dependencies. To see if the package has correctly installed, run
+
+That will install the `adjacency_graphs` package and all of the dependencies. To
+see if the package has correctly installed, run
+
 ```
 python examples/example_pipeline.py
 ```

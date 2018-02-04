@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/python:3.6.1
+      - image: continuumio/miniconda3
 
     working_directory: ~/repo
 
@@ -11,26 +11,27 @@ jobs:
 
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "requirements.txt" }}
+          - v1-dependencies-{{ checksum "environment.yml" }}
           - v1-dependencies-
 
       - run:
           name: install dependencies
           command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            pip install -r requirements.txt
+            conda env create -q || conda env update -q
+            source activate adj
+            conda install -qy pytest
+            conda clean -ay
             pip install -e .
 
       - save_cache:
           paths:
-            - ./venv
-          key: v1-dependencies-{{ checksum "requirements.txt" }}
+            - /opt/conda
+          key: v1-dependencies-{{ checksum "environment.yml" }}
 
       - run:
           name: run tests
           command: |
-            . venv/bin/activate
+            source activate adj
             pytest tests
 
       - store_artifacts:

@@ -1,0 +1,13 @@
+name: adj
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python
+  - matplotlib
+  - pandas
+  - pysal
+  - palettable
+  - fiona
+  - notebook
+  - nomkl
