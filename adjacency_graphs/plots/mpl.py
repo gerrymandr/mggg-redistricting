@@ -16,7 +16,7 @@ def visualize_adjacency_graph(mggg_graph, out_dir=None):
     # open the file and obtain pysal geometries
     shp = mggg_graph.loaded_geodata
     # setting up matplot figure
-    fig = plt.figure(figsize=(9, 9))
+    fig = plt.figure()
     fig.set_facecolor('white')
     base = maps.map_poly_shp(shp)
     base.set_linewidth(0.75)
@@ -46,5 +46,5 @@ def visualize_adjacency_graph(mggg_graph, out_dir=None):
 
     # save your output
     if(out_dir is not None):
-        savefig(out_dir)
+        plt.savefig(out_dir, dpi=150)
     return fig
