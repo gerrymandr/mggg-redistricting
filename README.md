@@ -1,3 +1,6 @@
+# Geometric Compactness Scores for Political Redistricting (MIT CSAIL + Tufts Metric Geometry and Gerrymandering Group)
+Designed geometric compactness score for gerrymandering in political redistricting based on Polsby-Popper score. Research Assistantship MIT CSAIL: Developed a high-performance geometric data processing library for scientific computing over GIS data (shapefiles) in Python. ● Researched and implemented high performance geometric data processing algorithms for political redistricting. Scaled polygon adjacency algorithms for big data geospatial analysis.
+
 # Census Data Mapping Project
 The code used in this project was used to create adjacency graphs and other data structures to model relationships between congressional districts, census tracts, and other census units and subunits. The main functions which can be executed using the code in this project are: creating adjacency graphs & matrices, visualizing these data structures, and computing compactness scores and other measures using member and border nodes. The code is also specifically adapted to working with census data and includes ways of labeling and identifying entries based on GEOIDs. The main and most useful functions have been formalized and documented in district_node_computation_library.py
 
